@@ -83,6 +83,8 @@ module.exports = {
             const { nome, email, dt_nasc, senha, tipo, ativo } = request.body;
             // parâmetro recebido pela URL via params ex: /usuario/1
             const { id } = request.params;
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(senha, saltRounds);
             // instruções SQL
             const sql = `
                 UPDATE usuarios SET 
@@ -91,7 +93,7 @@ module.exports = {
                     usu_id = ?;
             `;
             // preparo do array com dados que serão atualizados
-            const values = [nome, email, dt_nasc, senha, tipo, ativo, id];
+            const values = [nome, email, dt_nasc, hashedPassword, tipo, ativo, id];
             // execução e obtenção de confirmação da atualização realizada
             const [result] = await db.query(sql, values);
 
