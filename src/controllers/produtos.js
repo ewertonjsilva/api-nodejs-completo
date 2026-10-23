@@ -5,7 +5,9 @@
  * @desc   [Descrição do script ou função]
  */
 
-const db = require('../dataBase/connection');
+const db = require('../dataBase/connection'); 
+
+const { gerarUrl } = require('../utils/gerarUrl');
 
 module.exports = {
     async listarProdutos(request, response) {
@@ -59,7 +61,7 @@ module.exports = {
                 valor: produto.prd_valor,
                 unidade: produto.prd_unidade,
                 icone: produto.ptp_icone,
-                imgProduto: produto.prd_img,
+                imgProduto: gerarUrl(produto.prd_img, 'produtoDestaque', 'promoGenerica.png'),
                 descricao: produto.prd_descricao
             }));
 
@@ -131,8 +133,8 @@ module.exports = {
                 valor: parseFloat(valor).toFixed(2),
                 unidade,
                 tipo,
-                disponivel,
-                img
+                disponivel,                
+                imgProduto: gerarUrl(img, 'produtoDestaque', 'promoGenerica.png'),
             };
 
             return response.status(200).json({
@@ -239,7 +241,7 @@ module.exports = {
                 valor: parseFloat(rows[0].valor).toFixed(2),
                 unidade: rows[0].unidade,
                 disponivel: !!rows[0].disponivel,
-                img: rows[0].imagem,
+                img: gerarUrl(rows[0].imagem, 'produtoDestaque', 'promoGenerica.svg'),                
                 descricao: rows[0].descricao,
                 tipoNome: rows[0].nomeTipo,
                 tipoIcone: rows[0].iconeTipo,
@@ -281,7 +283,7 @@ module.exports = {
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Produtos em promoção.`,
-                dados: promo
+                dados: promo.map(p => ({ img: gerarUrl(p.imgDestaque, 'produtoDestaque', 'promoGenerica.svg') }))
             });
 
 
@@ -293,4 +295,4 @@ module.exports = {
             });
         }
     },
-}
+}   
