@@ -82,6 +82,54 @@ module.exports = {
             });
         }
     },
+    async listarProdutosAleatorios(request, response) {
+        const quantidade = Number.parseInt(request.query.quantidade ?? '5', 10);
+
+        if (!Number.isInteger(quantidade) || quantidade < 1) {
+            return response.status(400).json({
+                sucesso: false,
+                mensagem: 'A quantidade deve ser um número inteiro maior que zero.',
+                dados: null
+            });
+        }
+
+        try {
+            const sql = `
+                SELECT prd.prd_id, prd.prd_nome, prd.prd_valor, prd.prd_unidade,
+                        pdt.ptp_icone, prd.prd_img, prd.prd_descricao
+                FROM produtos prd
+                INNER JOIN produto_tipos pdt ON pdt.ptp_id = prd.ptp_id
+                WHERE prd.prd_disponivel = 1
+                ORDER BY RAND()
+                LIMIT ?
+            `;
+
+            const [produtos] = await db.query(sql, [quantidade]);
+            const dados = produtos.map(produto => ({
+                id: produto.prd_id,
+                nome: produto.prd_nome,
+                valor: produto.prd_valor,
+                unidade: produto.prd_unidade,
+                icone: produto.ptp_icone,
+                imgProduto: gerarUrl(produto.prd_img, 'produtoDestaque', 'promoGenerica.png'),
+                descricao: produto.prd_descricao
+            }));
+
+            return response.status(200).json({
+                sucesso: true,
+                mensagem: 'Lista de produtos aleatórios',
+                nItens: dados.length,
+                dados
+            });
+        } catch (error) {
+            console.error('Erro ao listar produtos aleatórios:', error);
+            return response.status(500).json({
+                sucesso: false,
+                mensagem: 'Erro ao listar produtos aleatórios.',
+                dados: error.message
+            });
+        }
+    },
     async cadastrarProdutos(request, response) {
         try {
 

@@ -26,6 +26,7 @@ router.get('/login', UsuariosController.login); // query
 
 router.get('/produtos', ProdutosController.listarProdutos);
 router.get('/produtos/promocao', ProdutosController.listarPromocoes);
+router.get('/produtos/aleatorios', ProdutosController.listarProdutosAleatorios);
 router.get('/produtos/:id', ProdutosController.listarIngredientesDoProduto);
 router.post('/produtos', ProdutosController.cadastrarProdutos);
 router.patch('/produtos', ProdutosController.editarProdutos);
