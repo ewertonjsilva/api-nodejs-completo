@@ -61,7 +61,7 @@ module.exports = {
                 valor: produto.prd_valor,
                 unidade: produto.prd_unidade,
                 icone: produto.ptp_icone,
-                imgProduto: gerarUrl(produto.prd_img, 'produtoDestaque', 'promoGenerica.png'),
+                imgProduto: gerarUrl(produto.prd_img, 'produtos', 'sem.jpg'),
                 descricao: produto.prd_descricao
             }));
 
@@ -111,7 +111,7 @@ module.exports = {
                 valor: produto.prd_valor,
                 unidade: produto.prd_unidade,
                 icone: produto.ptp_icone,
-                imgProduto: gerarUrl(produto.prd_img, 'produtoDestaque', 'promoGenerica.png'),
+                imgProduto: gerarUrl(produto.prd_img, 'produtos', 'sem.jpg'),
                 descricao: produto.prd_descricao
             }));
 
@@ -182,7 +182,7 @@ module.exports = {
                 unidade,
                 tipo,
                 disponivel,                
-                imgProduto: gerarUrl(img, 'produtoDestaque', 'promoGenerica.png'),
+                imgProduto: gerarUrl(produto.prd_img, 'produtos', 'sem.jpg'),
             };
 
             return response.status(200).json({
